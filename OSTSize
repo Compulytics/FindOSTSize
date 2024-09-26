@@ -1,0 +1,35 @@
+$OSTFileSize = 0; Get-ChildItem C:\Users\ -Recurse -Force | Sort-Object -Property FullName -Descending | Foreach-Object {
+	if ($_.Directory -and $_.Name -match ".ost$"){
+		Write-Host "$_"
+		$OSTFileSize += $_.Length
+	}
+}
+if ($OSTFileSize -lt 1024) {
+    Write-Output "*******************************************************"
+    Write-Output "Total OST size: $OSTFileSize Bytes"
+    Write-Output "*******************************************************"
+}
+elseif ($OSTFileSize -lt 1048576) {
+    $OSTFileSize = [math]::Round($OSTFileSize / 1024)
+    Write-Output "*******************************************************"
+    Write-Output "Total OST size: $OSTFileSize KiloBytes"
+    Write-Output "*******************************************************"
+}
+elseif ($OSTFileSize -lt 1073741824) {
+    $OSTFileSize = [math]::Round($OSTFileSize / 1048576)
+    Write-Output "*******************************************************"
+    Write-Output "Total OST size: $OSTFileSize MegaBytes"
+    Write-Output "*******************************************************"
+}
+elseif ($OSTFileSize -lt 137438953472) {
+    $OSTFileSize = [math]::Round($OSTFileSize / 1073741824)
+    Write-Output "*******************************************************"
+    Write-Output "Total OST size: $OSTFileSize GigaBytes"
+    Write-Output "*******************************************************"
+}
+else {
+    $OSTFileSize = [math]::Round($OSTFileSize / 137438953472)
+    Write-Output "*************************************************"
+    Write-Output "Total OST size: $OSTFileSize TeraBytes"
+    Write-Output "*************************************************"
+}
